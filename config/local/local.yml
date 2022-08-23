@@ -18,9 +18,3 @@ spring:
     username: ${JDBC_DATABASE_USERNAME:formating-site}
     password: ${JDBC_DATABASE_PASSWORD:formating-site}
     driver-class-name: org.postgresql.Driver
-
-flyway:
-  enabled: true
-  user: databaseUser
-  password: databasePassword
-  schemas: schemaName
