@@ -18,58 +18,50 @@ public class UserDaoJdbcImpl implements UserDao {
 
     @Override
     public User getUserByPhone(String phone) {
-        String sql =
-                """
-                        SELECT *
-                         FROM users
-                         WHERE phone = :phone;
-                        """;
+        String sql = "" +
+                "SELECT *" +
+                " FROM users" +
+                " WHERE phone = :phone;";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("phone", phone), new UserMapper());
     }
 
     @Override
     public List<String> getUsersPhoneById(int id) {
-        String sql = """
-                SELECT u.phone
-                 FROM users u JOIN users_flights uf ON u.phone = uf.user_phone
-                 WHERE uf.id = :id;
-                """;
+        String sql = "" +
+                "SELECT u.phone" +
+                " FROM users u JOIN users_flights uf ON u.phone = uf.user_phone" +
+                " WHERE uf.id = :id;";
         return jdbcTemplate.queryForList(sql, new MapSqlParameterSource("id", id), String.class);
     }
 
     @Override
     public Boolean checkExistUserByPhone(String phone) {
-        String sql = """
-                SELECT (COUNT(*) > 0)
-                 FROM users
-                 WHERE phone = :phone
-                """;
+        String sql = "" +
+                "SELECT (COUNT(*) > 0)" +
+                " FROM users" +
+                " WHERE phone = :phone;";
         return jdbcTemplate.queryForObject(sql, new MapSqlParameterSource("phone", phone), Boolean.class);
     }
 
     @Override
     public void createUser(User user) {
-        String sql =
-                """
-                        INSERT INTO users (phone, surname, name, patronymic, email, org_inn)
-                         VALUES (:phone, :surname, :name, :patronymic, :email, :orgInn);
-                        """;
+        String sql = "" +
+                "INSERT INTO users (phone, surname, name, patronymic, email, org_inn)" +
+                " VALUES (:phone, :surname, :name, :patronymic, :email, :orgInn);";
         jdbcTemplate.update(sql, getMapSqlParameterSource(user));
     }
 
     @Override
     public void updateUser(User user, String phone) {
-        String sql =
-                """
-                        UPDATE users
-                         SET
-                            surname = :surname,
-                            name = :name,
-                            patronymic = :patronymic,
-                            email = :email,
-                            org_inn = :orgInn
-                         WHERE phone = :phone;
-                        """;
+        String sql = "" +
+                "UPDATE users" +
+                " SET" +
+                "    surname = :surname," +
+                "    name = :name," +
+                "    patronymic = :patronymic," +
+                "    email = :email," +
+                "    org_inn = :orgInn" +
+                " WHERE phone = :phone;";
         MapSqlParameterSource param = getMapSqlParameterSource(user);
         param.addValue("phone", phone);
         jdbcTemplate.update(sql, param);
