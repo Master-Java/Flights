@@ -19,9 +19,9 @@ repositories {
     mavenCentral()
 }
 
-//node{
-//    download = true
-//}
+node{
+    download = true
+}
 
 flyway {
     url = 'jdbc:postgresql://localhost:5432/tickets'
