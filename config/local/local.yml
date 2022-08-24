@@ -1,5 +1,5 @@
 server:
-  port: 80
+  port: 8080
   servlet:
     context-path: "/"
 
@@ -14,13 +14,7 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
   datasource:
-    url: ${DBC_DATABASE_URL:jdbc:postgresql://localhost:5432/tickets}
-    username: ${JDBC_DATABASE_USERNAME:formating-site}
-    password: ${JDBC_DATABASE_PASSWORD:formating-site}
+    url: jdbc:postgresql://localhost:5432/tickets
+    username: formating-site
+    password: formating-site
     driver-class-name: org.postgresql.Driver
-
-flyway:
-  enabled: true
-  user: databaseUser
-  password: databasePassword
-  schemas: schemaName
