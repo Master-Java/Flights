@@ -7,7 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TicketApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(TicketApplication.class, args);
+        String[] myArgs = new String[args.length + 1];
+        myArgs[myArgs.length - 1] = " --spring.config.location=config/local/local.yml";
+        SpringApplication.run(TicketApplication.class, myArgs);
     }
 
 }
