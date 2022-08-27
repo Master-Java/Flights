@@ -16,4 +16,6 @@ public interface FlightService {
     List<Flight> getFlightsByUserPhone(String phone);
 
     void deleteFlight(int id);
+
+    void updateStatus();
 }

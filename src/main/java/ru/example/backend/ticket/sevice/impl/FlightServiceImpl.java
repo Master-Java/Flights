@@ -1,6 +1,7 @@
 package ru.example.backend.ticket.sevice.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.example.backend.ticket.dao.FlightDao;
 import ru.example.backend.ticket.domain.Flight;
@@ -39,7 +40,7 @@ public class FlightServiceImpl implements FlightService {
     public void updateFlight(Flight flight, int id) {
         flightDao.deleteLinkPassengersPhoneWithFlight(id);
         flightDao.updateFlight(flight, id);
-        createNewUsersAndNewLinkPassengersPhoneWithFlight(flight,id);
+        createNewUsersAndNewLinkPassengersPhoneWithFlight(flight, id);
     }
 
     @Override
@@ -70,5 +71,12 @@ public class FlightServiceImpl implements FlightService {
     public void deleteFlight(int id) {
         flightDao.deleteLinkPassengersPhoneWithFlightByFlightId(id);
         flightDao.deleteFlight(id);
+    }
+
+    @Override
+    @Scheduled(fixedRate = 850 * 60)
+    public void updateStatus() {
+        flightDao.updateStatusArchive();
+        flightDao.updateStatusInAWay();
     }
 }

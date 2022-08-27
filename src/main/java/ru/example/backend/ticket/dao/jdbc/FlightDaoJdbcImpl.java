@@ -11,6 +11,7 @@ import ru.example.backend.ticket.dao.mapper.FlightMapper;
 import ru.example.backend.ticket.domain.Flight;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +69,7 @@ public class FlightDaoJdbcImpl implements FlightDao {
                 " VALUES (:flightNumber, :fromPoint, :toPoint, :toPointDate, :fromPointDate, :airCompany, :flightStatus, :comment);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(sql, getMapSqlParameterSource(flight), keyHolder, new String[]{"id"});
-        return keyHolder.getKey().intValue();
+        return Objects.requireNonNull(keyHolder.getKey()).intValue();
     }
 
     @Override
@@ -112,5 +113,25 @@ public class FlightDaoJdbcImpl implements FlightDao {
         param.addValue("comment", flight.getComment());
         param.addValue("flightNumber", flight.getFlightNumber());
         return param;
+    }
+
+    @Override
+    public void updateStatusInAWay() {
+        String sql = "" +
+                "UPDATE flights" +
+                " SET flight_status = 'inaway'" +
+                " WHERE DATE_TRUNC('minute', TO_TIMESTAMP(to_point_date, 'YYYY-MM-DD HH24:MI:SS')) = DATE_TRUNC('minute', now() AT TIME ZONE 'Europe/Moscow')" +
+                "   AND flight_status = 'timetotime'";
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
+    }
+
+    @Override
+    public void updateStatusArchive() {
+        String sql = "" +
+                "UPDATE flights" +
+                " SET flight_status = 'archive'" +
+                " WHERE DATE_TRUNC('minute', TO_TIMESTAMP(from_point_date, 'YYYY-MM-DD HH24:MI:SS')) = DATE_TRUNC('minute', now() AT TIME ZONE 'Europe/Moscow')" +
+                "   AND flight_status = 'inaway'";
+        jdbcTemplate.update(sql, new MapSqlParameterSource());
     }
 }

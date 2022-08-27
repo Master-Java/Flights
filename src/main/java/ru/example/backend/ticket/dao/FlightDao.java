@@ -22,4 +22,8 @@ public interface FlightDao {
     Flight getByFlightNumber(long flightNumber);
 
     void deleteLinkPassengersPhoneWithFlightByFlightId(int id);
+
+    void updateStatusInAWay();
+
+    void updateStatusArchive();
 }
